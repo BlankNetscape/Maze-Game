@@ -10,7 +10,7 @@ public enum GameState
     MazeGenerated,
     MazeConfirmed,
     MazePlaying,
-    MazeFinished
+    MazeFinished,
 }
 
 public class GameStateManager : MonoBehaviour
@@ -23,6 +23,7 @@ public class GameStateManager : MonoBehaviour
 
     // Current game state
     public GameState CurrentState { get; private set; }
+    private GameStateScript CurrentStateSript { get; set; }
 
     // Event triggered when the game state changes
     public delegate void OnGameStateChangeHandler(GameState newState);
@@ -47,10 +48,9 @@ public class GameStateManager : MonoBehaviour
         uiManager = GameObject.Find("ControllCanvas").GetComponent<UIManager>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
-
         OnGameStateChange += HandleGameStateChange;
 
-        
+
         SetGameState(GameState.MazeSettings);
     }
 
@@ -64,59 +64,220 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+    private void SetGameStateScript(GameStateScript newScript)
+    {
+        if (CurrentStateSript != null) CurrentStateSript.Exit();
+        CurrentStateSript = newScript;
+        CurrentStateSript.Enter();
+    }
+
     private void HandleGameStateChange(GameState newState)
     {
-
+        // Test State
         if (newState == GameState.TestState)
         {
             Debug.Log("Game State Manager -> Handling Test event.");
         }
 
+        // Maze Setup State
         if (newState == GameState.MazeSettings)
         {
             Debug.Log("Game State Manager -> Handling Maze Settings event.");
-            uiManager.enableDimensionsDropdown();
-            uiManager.enableGenerateButton();
-            uiManager.disableConfirmButton();
-            gameManager.disablePlayers();
+            SetGameStateScript(new MazeSetupScript(this));
         }
 
+        // Maze Generating State
         if (newState == GameState.MazeGeneration)
         {
             Debug.Log("Game State Manager -> Handling Maze Generation event.");
-            uiManager.disableConfirmButton();
-            gameManager.disablePlayers();
+            SetGameStateScript(new MazeGeneratingScript(this));
         }
 
+        // Maze Generated State
         if (newState == GameState.MazeGenerated)
         {
             Debug.Log("Game State Manager -> Handling Maze Generated event.");
-            uiManager.enableConfirmButton();
+            SetGameStateScript(new MazeGeneratedScript(this));
         }
 
+        // Maze Cinfirmed State
         if (newState == GameState.MazeConfirmed)
         {
             Debug.Log("Game State Manager -> Handling Maze Confirmed event.");
-            uiManager.disableDimensionsDropdown();
-            uiManager.disableGenerateButton();
-            uiManager.disableConfirmButton();
-            transform.GetComponent<PlayableState>().Enter();
+            SetGameStateScript(new MazeConfirmedScript(this));
         }
 
+        // Level begun. Maze Play State
         if (newState == GameState.MazePlaying)
         {
             Debug.Log("Game State Manager -> Handling Maze Playing event.");
+            SetGameStateScript(new MazePlayingScript(this));
         }
 
+        // Level finished. Maze Finished State
         if (newState == GameState.MazeFinished)
         {
             Debug.Log("Game State Manager -> Handling Maze Finished event.");
-            uiManager.enableDimensionsDropdown();
-            uiManager.enableGenerateButton();
-            uiManager.disableConfirmButton();
+            SetGameStateScript(new MazeFinishedScript(this));
+            
         }
     }
 
+    // State Classes
+    private abstract class GameStateScript
+    {
+        public GameStateManager gameStateManager;
 
+        public GameStateScript(GameStateManager gameStateManager)
+        {
+            this.gameStateManager = gameStateManager;
+        }
 
+        public abstract void Enter();
+
+        public abstract void Exit();
+
+        public abstract void Update();
+    }
+
+    private class MazeSetupScript : GameStateScript
+    {
+        public MazeSetupScript(GameStateManager gameStateManager) : base(gameStateManager)
+        {
+        }
+
+        public override void Enter()
+        {
+            gameStateManager.uiManager.enableDimensionsDropdown();
+            gameStateManager.uiManager.enableGenerateButton();
+            gameStateManager.uiManager.disableConfirmButton();
+            gameStateManager.gameManager.disablePlayers();
+        }
+
+        public override void Exit()
+        {
+        }
+
+        public override void Update()
+        {
+        }
+    }
+
+    private class MazeGeneratingScript : GameStateScript
+    {
+        public MazeGeneratingScript(GameStateManager gameStateManager) : base(gameStateManager)
+        {
+        }
+
+        public override void Enter()
+        {
+            gameStateManager.uiManager.disableConfirmButton();
+            gameStateManager.gameManager.disablePlayers();
+
+            gameStateManager.gameManager.clearMaze();
+            gameStateManager.gameManager.generateMaze();
+        }
+
+        public override void Exit()
+        {
+        }
+
+        public override void Update()
+        {
+        }
+    }
+
+    private class MazeGeneratedScript : GameStateScript
+    {
+        public MazeGeneratedScript(GameStateManager gameStateManager) : base(gameStateManager)
+        {
+
+        }
+
+        public override void Enter()
+        {
+            gameStateManager.uiManager.enableConfirmButton();
+        }
+
+        public override void Exit()
+        {
+        }
+
+        public override void Update()
+        {
+        }
+    }
+
+    private class MazeConfirmedScript : GameStateScript
+    {
+        public MazeConfirmedScript(GameStateManager gameStateManager) : base(gameStateManager)
+        {
+        }
+
+        public override void Enter()
+        {
+            gameStateManager.uiManager.disableDimensionsDropdown();
+            gameStateManager.uiManager.disableGenerateButton();
+            gameStateManager.uiManager.disableConfirmButton();
+            gameStateManager.SetGameState(GameState.MazePlaying);
+        }
+
+        public override void Exit()
+        {
+        }
+
+        public override void Update()
+        {
+        }
+    }
+
+    private class MazePlayingScript : GameStateScript
+    {
+        public MazePlayingScript(GameStateManager gameStateManager) : base(gameStateManager)
+        {
+        }
+
+        public override void Enter()
+        { 
+            gameStateManager.gameManager.respawn();
+            gameStateManager.gameManager.enablePlayers();
+            
+            gameStateManager.gameManager.startStopwatch();
+            gameStateManager.gameManager.enablePlayerControls();
+        }
+
+        public override void Exit()
+        {
+            
+        }
+
+        public override void Update()
+        {
+        }
+    }
+
+    private class MazeFinishedScript : GameStateScript
+    {
+        public MazeFinishedScript(GameStateManager gameStateManager) : base(gameStateManager)
+        {
+        }
+
+        public override void Enter()
+        {
+            gameStateManager.gameManager.stopStopwatch();
+            gameStateManager.gameManager.disablePlayerControls();
+
+            gameStateManager.uiManager.enableDimensionsDropdown();
+            gameStateManager.uiManager.enableGenerateButton();
+        }
+
+        public override void Exit()
+        {
+        }
+
+        public override void Update()
+        {
+        }
+    }
 }
+

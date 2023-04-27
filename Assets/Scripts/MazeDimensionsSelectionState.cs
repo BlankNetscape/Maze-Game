@@ -15,12 +15,12 @@ public class MazeDimensionsSelectionState : MonoBehaviour
     public void ConfirmMazeDimensions(Vector2Int size)
     {
         // Call the MazeGenerator script to generate the maze with the selected dimensions
-        MazeGenerator mazeGenerator = FindObjectOfType<MazeGenerator>();
-        mazeGenerator.clearMaze();
+        //MazeGenerator mazeGenerator = FindObjectOfType<MazeGenerator>();
+        //mazeGenerator.clearMaze();
         // NOTE: GenerateMaze will change game state to MazeGenerated
-        mazeGenerator.StartCoroutine(mazeGenerator.GenerateMaze(size));
+        //mazeGenerator.StartCoroutine(mazeGenerator.GenerateMaze(size));
 
         // Transition to the next game state
-        gameStateManager.SetGameState(GameState.MazeGeneration);
+        //gameStateManager.SetGameState(GameState.MazeGeneration);
     }
 }

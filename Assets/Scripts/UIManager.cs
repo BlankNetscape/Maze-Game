@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public Vector2Int mazeDimensions = new Vector2Int(0, 0);
+
     // Reference to UI items
     TMPro.TMP_Dropdown dimensionsDropdown;
     Button generateButton;
@@ -34,7 +36,6 @@ public class UIManager : MonoBehaviour
 
     private void OnGenerateButtonClick()
     {
-        Vector2Int mazeDimensions;
         // Set maze dimensions
         switch (dimensionsDropdown.value)
         {
@@ -55,15 +56,17 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        // Call the ConfirmMazeDimensions method of the MazeDimensionsSelectionState
-        mazeDimensionsSelectionState.ConfirmMazeDimensions(mazeDimensions);
+        // NOTE: Call the ConfirmMazeDimensions method of the MazeDimensionsSelectionState.
+        GameObject.Find("Game State Manager").GetComponent<GameStateManager>().SetGameState(GameState.MazeGeneration);
     }
+
+    private void OnConfirmButtonClick() {
+        GameObject.Find("Game State Manager").GetComponent<GameStateManager>().SetGameState(GameState.MazeConfirmed);
+    }
+
     public void disableGenerateButton() => generateButton.interactable = false;
     public void enableGenerateButton() => generateButton.interactable = true;
 
-    private void OnConfirmButtonClick() {
-        mazeConfirmedState.ConfirmMaze();
-    }
     public void disableConfirmButton() => confirmButton.interactable = false;
     public void enableConfirmButton() => confirmButton.interactable = true;
 
