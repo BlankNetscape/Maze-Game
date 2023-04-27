@@ -713,6 +713,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &419953121 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 702197634624469355, guid: 4654042ed5081594382c741d88df590d, type: 3}
+  m_PrefabInstance: {fileID: 786845732}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &447252773
 GameObject:
   m_ObjectHideFlags: 0
@@ -1935,6 +1940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7698d894f8fa0ed49ac4c453c71d2be2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mazeDimensions: {x: 0, y: 0}
 --- !u!1 &1323916082
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,7 +2106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07f08ab7bf3cb24488efd83f4474834a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopwathText: {fileID: 447252773}
+  uiManagerHolder: {fileID: 1310770859}
+  gameStateManagerHolder: {fileID: 2021603136}
+  mazeGeneratorHolder: {fileID: 419953121}
+  player: {fileID: 1539138829}
+  isDebug: 1
 --- !u!4 &1389566684
 Transform:
   m_ObjectHideFlags: 0
@@ -2288,6 +2298,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!1 &1539138829 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1506180098231869998, guid: af16e8b28c0767b4db9d223d06c11378, type: 3}
+  m_PrefabInstance: {fileID: 2139888647}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1666686600
 GameObject:
   m_ObjectHideFlags: 0
@@ -2423,6 +2438,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1666686600}
   m_CullTransparentMesh: 1
+--- !u!1 &2021603136 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8796639647855676312, guid: 8b3904ea4e61e7d4fb5685089dbaea90, type: 3}
+  m_PrefabInstance: {fileID: 4892411737282702961}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2042917244
 GameObject:
   m_ObjectHideFlags: 0

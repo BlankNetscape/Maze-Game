@@ -75,8 +75,7 @@ public class MazeNode : MonoBehaviour
     {
         if (nodeType != NodeType.Finish) return;
 
-        GameObject.Find("Game State Manager").GetComponent<PlayableState>().Finished();
-
         Debug.Log("Collided with finish!");
+        GameObject.Find("Game State Manager").GetComponent<GameStateManager>().SetGameState(GameState.MazeFinished);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,13 +6,6 @@ using UnityEngine;
 public class MazeGenerator : MonoBehaviour
 {
     [SerializeField] MazeNode nodePrefab;
-
-    GameStateManager gameStateManager;
-
-    void Start()
-    {
-        gameStateManager = GameObject.Find("Game State Manager").GetComponent<GameStateManager>();
-    }
 
     public void clearMaze()
     {
@@ -22,7 +16,7 @@ public class MazeGenerator : MonoBehaviour
     }
 
 
-    public IEnumerator GenerateMaze(Vector2Int size)
+    public IEnumerator GenerateMaze(Vector2Int size, Action action)
     {
         List<MazeNode> nodes = new List<MazeNode>();
 
@@ -42,7 +36,7 @@ public class MazeGenerator : MonoBehaviour
         List<MazeNode> completedNodes = new List<MazeNode>();
 
         // Choose starting node
-        currentPath.Add(nodes[Random.Range(0, nodes.Count)]);
+        currentPath.Add(nodes[UnityEngine.Random.Range(0, nodes.Count)]);
         currentPath[0].SetState(NodeState.Current);
 
         while (completedNodes.Count < nodes.Count)
@@ -99,7 +93,7 @@ public class MazeGenerator : MonoBehaviour
             // Choose next node
             if (possibleDirections.Count > 0)
             {
-                int chosenDirection = Random.Range(0, possibleDirections.Count);
+                int chosenDirection = UnityEngine.Random.Range(0, possibleDirections.Count);
                 MazeNode chosenNode = nodes[possibleNextNodes[chosenDirection]];
 
                 switch (possibleDirections[chosenDirection])
@@ -146,9 +140,8 @@ public class MazeGenerator : MonoBehaviour
             }
         }
 
-        // Once the maze is generated, transition to the MazeGenerated state
-        gameStateManager.SetGameState(GameState.MazeGenerated);
-
+        // Should change game state to Generated
+        action();
         yield break;
 
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(Stopwatch))]
 public class GameManager : MonoBehaviour
@@ -11,7 +12,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject player;
 
     private UIManager uiManager;
-    private GameStateManager gameStatemanager;
+    private GameStateManager gameStateManager;
     private MazeGenerator mazeGenerator;
     private Stopwatch stopwatch;
 
@@ -20,16 +21,35 @@ public class GameManager : MonoBehaviour
     [SerializeField] private bool isDebug = true;
     private bool keepUpdateStopwatchText = false;
 
+    private delegate void action();
+
     private void Start()
     {
         uiManager = uiManagerHolder.GetComponent<UIManager>();
-        gameStatemanager = gameStateManagerHolder.GetComponent<GameStateManager>();
+        gameStateManager = gameStateManagerHolder.GetComponent<GameStateManager>();
         stopwathTextHolder = uiManagerHolder.transform.Find("StopwatchText");
         mazeGenerator = mazeGeneratorHolder.GetComponent<MazeGenerator>();
 
         stopwatch = transform.GetComponent<Stopwatch>();
 
     }
+
+    public void clearMaze()
+    {
+        Debug.Log("Clearing..");
+        mazeGenerator.clearMaze();
+    }
+
+    public void generateMaze()
+    {
+        Debug.Log("Generating...");
+        var a = new Action(()=> { 
+            gameStateManager.SetGameState(GameState.MazeGenerated); 
+        });
+        // Start Generate Maze Coroutine and Change State to Generated after generating finished
+        StartCoroutine(mazeGenerator.GenerateMaze(uiManager.mazeDimensions, a));
+    }
+
 
     // Move Players to start position.
     public void respawn()
