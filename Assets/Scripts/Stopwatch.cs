@@ -1,12 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Stopwatch : MonoBehaviour
 {
     private bool isRunning;
     private float elapsedTime;
-    
+
 
     // Coroutine-based stopwatch
     private IEnumerator StopwatchCoroutine()

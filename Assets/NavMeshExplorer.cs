@@ -30,7 +30,7 @@ public class NavMeshExplorer : MonoBehaviour
 
         //while (queue.Count > 0 && queue.Count < 100000)
         while (queue.Count > 0)
-            {
+        {
             c++;
 
             Vector3 currentNode = queue.Dequeue();
@@ -60,15 +60,15 @@ public class NavMeshExplorer : MonoBehaviour
                     //break;
                     foreach (Vector3 visitedNode in visitedNodes)
                     {
-                        
+
                         if (NavMesh.SamplePosition(visitedNode, out NavMeshHit hit, 0.5f, NavMesh.AllAreas))
                         {
                             //Debug.Log(Vector3.Distance(currentNode, hit.position) < 1 ? true : "");
                             if (Vector3.Distance(currentNode, hit.position) < STEP)
                             {
                                 path.Add(currentNode);
-                                            currentNode = visitedNode;
-                                            break;
+                                currentNode = visitedNode;
+                                break;
                             }
                         }
                     }
@@ -117,7 +117,7 @@ public class NavMeshExplorer : MonoBehaviour
                 Debug.Log($"Added -> {neighbor}");
                 visitedNodes.Add(neighbor);
                 queue.Enqueue(neighbor);
-                
+
 
                 //if ( (Mathf.Abs(Vector3.Distance(neighbor, visitedNodes[i])) > agent.speed*Time.deltaTime - 0.1) ) {
                 //    if (agent.CalculatePath(neighbor, newPath))
@@ -149,7 +149,7 @@ public class NavMeshExplorer : MonoBehaviour
         //float step = agent.speed * Time.deltaTime;
         float step = STEP;
 
-        if (agent.CalculatePath(position + new Vector3(0,0,step), path))
+        if (agent.CalculatePath(position + new Vector3(0, 0, step), path))
             neighbors.Add(position + new Vector3(0, 0, step));
 
         if (agent.CalculatePath(position + new Vector3(0, 0, -step), path))

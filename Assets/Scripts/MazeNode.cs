@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MazeNode : MonoBehaviour
@@ -38,13 +36,14 @@ public class MazeNode : MonoBehaviour
             BoxCollider bc = gameObject.AddComponent(typeof(BoxCollider)) as BoxCollider;
             bc.size = new Vector3(.9f, .9f, .9f);
             bc.isTrigger = true;
-        } 
+        }
         else if (type == NodeType.Respawn)
         {
             tag = GameTags.Respawn;
             nodeType = type;
             SetFloorColor(Color.green);
-        } else
+        }
+        else
         {
             // Default case
             tag = GameTags.Untagged;
