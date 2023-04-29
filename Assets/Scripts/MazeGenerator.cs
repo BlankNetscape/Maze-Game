@@ -133,10 +133,11 @@ public class MazeGenerator : MonoBehaviour
             MazeNode node = nodes[i];
             if (i == 0) node.SetType(NodeType.Respawn);
             else if (i == nodes.Count - 1) node.SetType(NodeType.Finish);
-            else {
-                int foo = size.y % 2 != 0 ? 0 : (int)Mathf.Floor(i/size.y);
+            else
+            {
+                int foo = size.y % 2 != 0 ? 0 : (int)Mathf.Floor(i / size.y);
                 node.SetType(NodeType.Floor);
-                node.SetFloorColor((i+foo) % 2 == 0 ? Color.white : Color.grey);
+                node.SetFloorColor((i + foo) % 2 == 0 ? Color.white : Color.grey);
             }
         }
 

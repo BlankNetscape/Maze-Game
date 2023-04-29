@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum GameState
@@ -119,7 +117,7 @@ public class GameStateManager : MonoBehaviour
         {
             Debug.Log("Game State Manager -> Handling Maze Finished event.");
             SetGameStateScript(new MazeFinishedScript(this));
-            
+
         }
     }
 
@@ -197,6 +195,8 @@ public class GameStateManager : MonoBehaviour
         public override void Enter()
         {
             gameStateManager.uiManager.enableConfirmButton();
+            gameStateManager.gameManager.bakeNavMesh();
+            gameStateManager.gameManager.initBot();
         }
 
         public override void Exit()
@@ -216,6 +216,9 @@ public class GameStateManager : MonoBehaviour
 
         public override void Enter()
         {
+            gameStateManager.gameManager.setupBot();
+
+
             gameStateManager.uiManager.disableDimensionsDropdown();
             gameStateManager.uiManager.disableGenerateButton();
             gameStateManager.uiManager.disableConfirmButton();
@@ -238,17 +241,17 @@ public class GameStateManager : MonoBehaviour
         }
 
         public override void Enter()
-        { 
+        {
             gameStateManager.gameManager.respawn();
             gameStateManager.gameManager.enablePlayers();
-            
+
             gameStateManager.gameManager.startStopwatch();
             gameStateManager.gameManager.enablePlayerControls();
         }
 
         public override void Exit()
         {
-            
+
         }
 
         public override void Update()

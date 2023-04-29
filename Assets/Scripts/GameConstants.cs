@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-
 public enum Dirrections
 {
     RIGHT = 1,
@@ -30,6 +25,7 @@ public class GameTags
     public static readonly string Untagged = "Untagged";
     public static readonly string Respawn = "Respawn";
     public static readonly string Finish = "Finish";
+    public static readonly string EditorOnly = "EditorOnly";
 }
 
 public enum Destinations

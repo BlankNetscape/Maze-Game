@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Move : MonoBehaviour
 {
-    [SerializeField]  private CharacterController controller;
+    [SerializeField] private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
     [SerializeField] private float playerSpeed = 2.0f;
@@ -16,7 +14,7 @@ public class Move : MonoBehaviour
 
     private void Start()
     {
-       // controller = gameObject.AddComponent<CharacterController>();
+        // controller = gameObject.AddComponent<CharacterController>();
     }
 
     void Update()
@@ -30,18 +28,18 @@ public class Move : MonoBehaviour
         }
 
         move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        
+
 
         /**
          * TODO: if (... &&  groundedPlayer)
          */
         // Changes the height position of the player..
-        if (Input.GetButtonDown("Jump") )
+        if (Input.GetButtonDown("Jump"))
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
         }
 
-        
+
     }
     private void FixedUpdate()
     {

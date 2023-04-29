@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,7 +58,8 @@ public class UIManager : MonoBehaviour
         GameObject.Find("Game State Manager").GetComponent<GameStateManager>().SetGameState(GameState.MazeGeneration);
     }
 
-    private void OnConfirmButtonClick() {
+    private void OnConfirmButtonClick()
+    {
         GameObject.Find("Game State Manager").GetComponent<GameStateManager>().SetGameState(GameState.MazeConfirmed);
     }
 
