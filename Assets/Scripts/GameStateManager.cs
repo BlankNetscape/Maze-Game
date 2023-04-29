@@ -194,8 +194,9 @@ public class GameStateManager : MonoBehaviour
 
         public override void Enter()
         {
-            gameStateManager.gameManager.bakeNavMesh();
             gameStateManager.uiManager.enableConfirmButton();
+            gameStateManager.gameManager.bakeNavMesh();
+            gameStateManager.gameManager.initBot();
         }
 
         public override void Exit()
