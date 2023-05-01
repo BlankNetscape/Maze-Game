@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     TMPro.TMP_Dropdown botSpeedModDropdown;
     Button generateButton;
     Button confirmButton;
+    Button exitButton;
 
     // Reference to the Maze States
     MazeDimensionsSelectionState mazeDimensionsSelectionState;
@@ -26,6 +27,7 @@ public class UIManager : MonoBehaviour
         botSpeedModDropdown = GameObject.Find("BotSpeedModDropdown").GetComponent<TMPro.TMP_Dropdown>();
         generateButton = GameObject.Find("GenerateButton").GetComponent<Button>();
         confirmButton = GameObject.Find("ConfirmButton").GetComponent<Button>();
+        exitButton = GameObject.Find("ExitButton").GetComponent<Button>();
 
         mazeDimensionsSelectionState = GameObject.Find("Game State Manager").GetComponent<MazeDimensionsSelectionState>();
         mazeConfirmedState = GameObject.Find("Game State Manager").GetComponent<MazeConfirmedState>();
@@ -37,6 +39,12 @@ public class UIManager : MonoBehaviour
         // Subscribe to the buttons click event
         generateButton.onClick.AddListener(OnGenerateButtonClick);
         confirmButton.onClick.AddListener(OnConfirmButtonClick);
+        exitButton.onClick.AddListener(OnExitButtonClick);
+    }
+
+    private void OnExitButtonClick()
+    {
+        Application.Quit();
     }
 
     private void OnGenerateButtonClick()
