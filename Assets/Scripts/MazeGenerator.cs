@@ -7,6 +7,15 @@ public class MazeGenerator : MonoBehaviour
 {
     [SerializeField] MazeNode nodePrefab;
 
+    [SerializeField] MazeNode startNodePrefab;
+    [SerializeField] MazeNode finishNodePrefab;
+    [SerializeField] MazeNode simpleNodePrefab;
+
+    //private void Start()
+    //{
+    //    StartCoroutine(GenerateMaze(new Vector2Int(3,3), ()=> { }));
+    //}
+
     public void clearMaze()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -27,7 +36,19 @@ public class MazeGenerator : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 Vector3 nodePos = new Vector3(x - (size.x / 2f), 0, y - (size.y / 2f));
-                MazeNode newNode = Instantiate(nodePrefab, nodePos, Quaternion.identity, transform);
+                MazeNode newNode;
+                if (x == 0 && y == 0)
+                {
+                    newNode = Instantiate(startNodePrefab, nodePos, Quaternion.identity, transform);
+
+                } else if (x == size.x-1 && y == size.y-1)
+                {
+                    newNode = Instantiate(finishNodePrefab, nodePos, Quaternion.identity, transform);
+
+                } else
+                {
+                    newNode = Instantiate(simpleNodePrefab, nodePos, Quaternion.identity, transform);
+                }
                 nodes.Add(newNode);
             }
         }
@@ -137,7 +158,7 @@ public class MazeGenerator : MonoBehaviour
             {
                 int foo = size.y % 2 != 0 ? 0 : (int)Mathf.Floor(i / size.y);
                 node.SetType(NodeType.Floor);
-                node.SetFloorColor((i + foo) % 2 == 0 ? Color.white : Color.grey);
+                node.SetFloorColor((i + foo) % 2 == 0 ? node.primaryColor : node.secondaryColor);
             }
         }
 

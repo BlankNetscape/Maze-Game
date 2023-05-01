@@ -20,6 +20,13 @@ public enum NodeType
     Finish
 }
 
+public enum Destinations
+{
+    START,
+    FINISH
+}
+
+
 public class GameTags
 {
     public static readonly string Untagged = "Untagged";
@@ -28,10 +35,17 @@ public class GameTags
     public static readonly string EditorOnly = "EditorOnly";
 }
 
-public enum Destinations
+public class SpeedValues
 {
-    START,
-    FINISH
+    public static readonly float SLOW = 2f;
+    public static readonly float NORMAL = 2.5f;
+    public static readonly float FAST = 4f;
 }
 
-
+public class BotSpeedModValues
+{
+    // Multipliers
+    public static readonly float FAST = .9f;
+    public static readonly float NORMAL = .75f;
+    public static readonly float SLOW = .5f;
+}

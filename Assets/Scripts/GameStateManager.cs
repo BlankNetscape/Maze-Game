@@ -146,7 +146,7 @@ public class GameStateManager : MonoBehaviour
 
         public override void Enter()
         {
-            gameStateManager.uiManager.enableDimensionsDropdown();
+            gameStateManager.uiManager.enableDropdowns();
             gameStateManager.uiManager.enableGenerateButton();
             gameStateManager.uiManager.disableConfirmButton();
             gameStateManager.gameManager.disablePlayers();
@@ -196,7 +196,9 @@ public class GameStateManager : MonoBehaviour
         {
             gameStateManager.uiManager.enableConfirmButton();
             gameStateManager.gameManager.bakeNavMesh();
-            gameStateManager.gameManager.initBot();
+
+            gameStateManager.gameManager.initPlayer();
+            gameStateManager.gameManager.initBot(); // Bot Will be destroyed is playersDisable
         }
 
         public override void Exit()
@@ -216,10 +218,12 @@ public class GameStateManager : MonoBehaviour
 
         public override void Enter()
         {
+            
+
             gameStateManager.gameManager.setupBot();
+            gameStateManager.gameManager.setupPlayer();
 
-
-            gameStateManager.uiManager.disableDimensionsDropdown();
+            gameStateManager.uiManager.disableDropdowns();
             gameStateManager.uiManager.disableGenerateButton();
             gameStateManager.uiManager.disableConfirmButton();
             gameStateManager.SetGameState(GameState.MazePlaying);
@@ -270,7 +274,9 @@ public class GameStateManager : MonoBehaviour
             gameStateManager.gameManager.stopStopwatch();
             gameStateManager.gameManager.disablePlayerControls();
 
-            gameStateManager.uiManager.enableDimensionsDropdown();
+            //gameStateManager.SetGameState(GameState.MazeSettings);
+
+            gameStateManager.uiManager.enableDropdowns();
             gameStateManager.uiManager.enableGenerateButton();
         }
 

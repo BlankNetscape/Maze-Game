@@ -9,8 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject uiManagerHolder;
     [SerializeField] GameObject gameStateManagerHolder;
     [SerializeField] GameObject mazeGeneratorHolder;
-    [SerializeField] GameObject player;
+    [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject botPrefab;
+    private GameObject player;
     private GameObject bot;
 
     private NavMeshAgent agent;
@@ -68,20 +69,6 @@ public class GameManager : MonoBehaviour
 
         // Respan Player
         player.transform.position = new Vector3(startNode.position.x, startNode.position.y + .1f, startNode.position.z);
-
-
-
-        // Respawn bot
-
-
-        //disablePlayers();
-
-
-
-
-        // Warp NavMesh Agent to the start of the maze
-        //bot.GetComponent<NavMeshAgent>().Warp(new Vector3(startNode.position.x, startNode.position.y + 1, startNode.position.z));
-        //enablePlayers();
     }
 
 
@@ -89,9 +76,12 @@ public class GameManager : MonoBehaviour
     // Make Players Invisible.
     public void disablePlayers()
     {
-        player.transform.GetComponent<Renderer>().enabled = false;
-        // NOTE: Fixes bug -> Player keeps triggering finish.
-        player.transform.position = new Vector3(100, 100, 100);
+        if (player != null)
+        {
+            player.transform.GetComponent<Renderer>().enabled = false;
+            // NOTE: Fixes bug -> Player keeps triggering finish.
+            player.transform.position = new Vector3(100, 100, 100);
+        }
 
 
         if (bot != null)
@@ -153,23 +143,7 @@ public class GameManager : MonoBehaviour
         if (mazeGeneratorHolder.GetComponent<NavMeshSurface>() == null) mazeGeneratorHolder.AddComponent<NavMeshSurface>();
         var surface = mazeGeneratorHolder.GetComponent<NavMeshSurface>();
 
-        //for (int i = 0; i < mazeGeneratorHolder.transform.childCount; i++)
-        //{
-        //    Transform child = mazeGeneratorHolder.transform.GetChild(i).GetChild(0);
-        //    child.gameObject.AddComponent<NavMeshSurface>();
-        //    child.gameObject.GetComponent<NavMeshSurface>().BuildNavMesh();
-        //}
-
-
         surface.BuildNavMesh();
-    }
-
-    public void setupBot()
-    {
-        if (bot == null) return;
-
-        agent.destination = mazeGenerator.transform.GetChild(mazeGenerator.transform.childCount-1).position;
-        agent.isStopped = false;
     }
 
     public void initBot()
@@ -179,7 +153,30 @@ public class GameManager : MonoBehaviour
         Transform startNode = mazeGenerator.transform.GetChild(0);
         bot = Instantiate(botPrefab, startNode.position ,Quaternion.identity, transform);
         agent = bot.AddComponent<NavMeshAgent>();
-        agent.speed = 1.5f;
+    }
+
+    public void initPlayer()
+    {
+        if (player != null) return;
+
+        Transform startNode = mazeGenerator.transform.GetChild(0);
+        player = Instantiate(playerPrefab, startNode.position, Quaternion.identity, transform);
+        player.transform.GetComponent<Renderer>().enabled = false;
+    }
+
+    public void setupBot()
+    {
+        if (bot == null) return;
+
+        agent.speed = uiManager.playerSpeed * uiManager.botSpeedMod;
+
+        agent.destination = mazeGenerator.transform.GetChild(mazeGenerator.transform.childCount-1).position;
+        agent.isStopped = true;
+    }
+
+    public void setupPlayer()
+    {
+        player.GetComponent<Move>().playerSpeed = uiManager.playerSpeed;
     }
 }
 

@@ -4,7 +4,17 @@ public class MazeNode : MonoBehaviour
 {
     [SerializeField] GameObject[] walls;
     [SerializeField] MeshRenderer floor;
-    private NodeType nodeType = NodeType.Floor;
+
+    [SerializeField] public Color primaryColor;
+    [SerializeField] public Color secondaryColor;
+
+    protected NodeType nodeType = NodeType.Floor;
+
+    [ExecuteAlways]
+    private void Start()
+    {
+        floor.material.color = primaryColor;
+    }
 
     // Sets the Floor color according to Node state
     public void SetState(NodeState state)
@@ -31,24 +41,24 @@ public class MazeNode : MonoBehaviour
         {
             tag = GameTags.Finish;
             nodeType = type;
-            SetFloorColor(Color.yellow);
+            SetFloorColor(primaryColor);
 
-            BoxCollider bc = gameObject.AddComponent(typeof(BoxCollider)) as BoxCollider;
-            bc.size = new Vector3(.9f, .9f, .9f);
-            bc.isTrigger = true;
+            //BoxCollider bc = gameObject.AddComponent(typeof(BoxCollider)) as BoxCollider;
+            //bc.size = new Vector3(.9f, .9f, .9f);
+            //bc.isTrigger = true;
         }
         else if (type == NodeType.Respawn)
         {
             tag = GameTags.Respawn;
             nodeType = type;
-            SetFloorColor(Color.green);
+            SetFloorColor(primaryColor);
         }
         else
         {
             // Default case
             tag = GameTags.Untagged;
             nodeType = NodeType.Floor;
-            SetFloorColor(Color.white);
+            //SetFloorColor(Color.white);
         }
     }
 
@@ -75,6 +85,30 @@ public class MazeNode : MonoBehaviour
         if (nodeType != NodeType.Finish) return;
 
         Debug.Log("Collided with finish!");
+        Debug.Log($"{collider.name} win!");
         GameObject.Find("Game State Manager").GetComponent<GameStateManager>().SetGameState(GameState.MazeFinished);
     }
 }
+
+
+//public class MazeStartNode : MazeNode
+//{
+//    [SerializeField] GameManager flag;
+//}
+
+//public class MazeFinishNode : MazeNode
+//{
+//    private void OnTriggerEnter(Collider collider)
+//    {
+//        if (nodeType != NodeType.Finish) return;
+
+//        Debug.Log("Collided with finish!");
+//        Debug.Log($"{collider.name} win!");
+//        GameObject.Find("Game State Manager").GetComponent<GameStateManager>().SetGameState(GameState.MazeFinished);
+//    }
+//}
+
+//public class MazeSimpleNode : MazeNode
+//{
+
+//}
